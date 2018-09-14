@@ -1,0 +1,4 @@
+__pycache__/
+django_sberbank.egg-info/
+build/
+dist/

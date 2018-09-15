@@ -110,7 +110,7 @@ class BankService(object):
 
     def check_bind_refund(self, payment):
         if payment.details.get('bind_refund', False) and \
-            payment.status == Status.SUCCEEDED:
+            payment.status in (Status.PENDING, Status.SUCCEEDED):
             self.reverse(payment)
 
     def reverse(self, payment):

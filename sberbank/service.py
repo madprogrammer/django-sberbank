@@ -1,5 +1,4 @@
 import json
-import os
 from decimal import Decimal, DecimalException
 
 import requests
@@ -17,7 +16,7 @@ class BankService(object):
     __default_gateway_address = 'https://3dsec.sberbank.ru/payment/rest'
 
     def __init__(self, merchant_id):
-        if os.environ.get('ENVIRONMENT', None) == 'production':
+        if getattr(settings, 'ENVIRONMENT', 'development') == 'production':
             self.__default_gateway_address = \
                 'https://securepayments.sberbank.ru/payment/rest'
         else:

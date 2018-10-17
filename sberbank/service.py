@@ -44,6 +44,41 @@ class BankService(object):
                     "Field '%s' not found in %s->%s" % (
                         field_name, settings_merchant_key, merchant_id))
 
+    def mobile_pay(self, amount, token, ip, **kwargs):
+        currency = self.merchant.get('currency', self.__default_currency_code)
+        details = kwargs.get('details', {})
+
+        try:
+            amount = Decimal(str(amount))
+        except (ValueError, DecimalException):
+            raise TypeError(
+                "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
+
+        payment = Payment(amount=amount, client_id=client_id, details={
+            'username': self.merchant.get("username"),
+            'currency': currency
+        })
+
+        if kwargs.get('params'):
+            payment.details.update(kwargs.get('params'))
+
+        payment.details.update(details)
+        payment.save()
+
+        data = {
+            'merchant': self.merchant.get("username"),
+            'orderNumber': payment.uid.hex,
+            'amount': int(amount * 100),
+            'paymentToken': token,
+            'ip': ip
+        }
+        if kwargs.get('params'):
+            data.update({'additionalParameters': kwargs.get('params')})
+        if kwargs.get('description'):
+            data.update({'description': description})
+
+        return self.execute_request(data, "payment", payment)
+
     def pay(self, amount, **kwargs):
         session_timeout = self.merchant.get('session_timeout', self.__default_session_timeout)
         currency = self.merchant.get('currency', self.__default_currency_code)

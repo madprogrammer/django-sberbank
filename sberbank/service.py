@@ -54,7 +54,7 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, client_id=client_id, details={
+        payment = Payment(amount=amount, details={
             'username': self.merchant.get("username"),
             'currency': currency
         })

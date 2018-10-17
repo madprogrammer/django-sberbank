@@ -75,7 +75,7 @@ class BankService(object):
         if kwargs.get('params'):
             data.update({'additionalParameters': kwargs.get('params')})
         if kwargs.get('description'):
-            data.update({'description': description})
+            data.update({'description': kwargs.get('description')})
 
         return self.execute_request(data, "payment", payment)
 

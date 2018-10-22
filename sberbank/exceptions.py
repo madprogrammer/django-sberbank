@@ -11,7 +11,7 @@ class ProcessingException(RequestException):
     def __init__(self, payment_id, error_text=None, error_code=None):
         self.payment_id = payment_id
         self.error_text = error_text
-        self.error_code = int(error_code)
+        self.error_code = int(error_code) if error_code else None
         super().__init__('Bank error. Payment ID {}. Info: {} {}'.format(
             payment_id, error_text, error_code))
 

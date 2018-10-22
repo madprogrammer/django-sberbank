@@ -1,4 +1,5 @@
 import json
+import base64
 from decimal import Decimal, DecimalException
 
 import requests
@@ -13,15 +14,12 @@ from sberbank.util import system_name
 class BankService(object):
     __default_session_timeout = 1200
     __default_currency_code = 643
-    __default_gateway_address = 'https://3dsec.sberbank.ru/payment/rest'
+    __default_gateway_address = 'https://3dsec.sberbank.ru/payment'
 
     def __init__(self, merchant_id):
         if getattr(settings, 'ENVIRONMENT', 'development') == 'production':
             self.__default_gateway_address = \
-                'https://securepayments.sberbank.ru/payment/rest'
-        else:
-            self.__default_gateway_address = \
-                'https://3dsec.sberbank.ru/payment/rest'
+                'https://securepayments.sberbank.ru/payment'
         self._get_credentials(merchant_id)
 
     def _get_credentials(self, merchant_id):
@@ -47,6 +45,14 @@ class BankService(object):
     def mobile_pay(self, amount, token, ip, **kwargs):
         currency = self.merchant.get('currency', self.__default_currency_code)
         details = kwargs.get('details', {})
+        method = "applepay/payment"
+
+        try:
+            decoded_token = json.loads(base64.b64decode(token))
+            if "encryptedMessage" in decoded_token:
+                method = "google/payment"
+        except:
+            raise TypeError("Failed to decode payment token")
 
         try:
             amount = Decimal(str(amount))
@@ -79,16 +85,16 @@ class BankService(object):
 
         return self.execute_request(data, "payment", payment)
 
-    def pay(self, amount, **kwargs):
+    def pay(self, amount, preauth=False, **kwargs):
         session_timeout = self.merchant.get('session_timeout', self.__default_session_timeout)
         currency = self.merchant.get('currency', self.__default_currency_code)
         fail_url = kwargs.get('fail_url', self.merchant.get('fail_url'))
         success_url = kwargs.get('success_url', self.merchant.get('success_url'))
         client_id = kwargs.get('client_id')
-        method = kwargs.get('method', 'register')
         page_view = kwargs.get('page_view', 'DESKTOP')
         details = kwargs.get('details', {})
         description = kwargs.get('description')
+        method = 'rest/register' if not preauth else "rest/registerPreAuth"
 
         if success_url is None:
             raise ValueError("success_url is not set")
@@ -148,7 +154,7 @@ class BankService(object):
             self.reverse(payment)
 
     def reverse(self, payment):
-        return self.execute_request({'orderId': str(payment.bank_id)}, "reverse", payment)
+        return self.execute_request({'orderId': str(payment.bank_id)}, "rest/reverse", payment)
 
     def check_status(self, payment_uid):
         try:
@@ -157,7 +163,7 @@ class BankService(object):
             raise PaymentNotFoundException()
 
         data = {'orderId': str(payment.bank_id)}
-        response = self.execute_request(data, "getOrderStatusExtended", payment)
+        response = self.execute_request(data, "rest/getOrderStatusExtended", payment)
 
         if response.get('orderStatus') == 2:
             payment.status = Status.SUCCEEDED
@@ -176,14 +182,14 @@ class BankService(object):
                 'system': system_name(entry['maskedPan'])
             }
         try:
-            response = self.execute_request({"clientId": client_id}, "getBindings")
+            response = self.execute_request({"clientId": client_id}, "rest/getBindings")
             return list(map(convert, response.get('bindings')))
         except ProcessingException as exc:
             if exc.error_code == 2:
                 return []
 
     def deactivate_binding(self, binding_id):
-        self.execute_request({'bindingId': binding_id}, "unBindCard")
+        self.execute_request({'bindingId': binding_id}, "rest/unBindCard")
 
     def execute_request(self, data, method, payment=None):
         data.update({

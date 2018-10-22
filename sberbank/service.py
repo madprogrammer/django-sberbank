@@ -48,7 +48,7 @@ class BankService(object):
         method = "applepay/payment"
 
         try:
-            decoded_token = json.loads(base64.b64decode(token))
+            decoded_token = json.loads(base64.b64decode(token).decode())
             if "encryptedMessage" in decoded_token:
                 method = "google/payment"
         except:

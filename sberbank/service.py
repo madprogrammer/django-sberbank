@@ -49,7 +49,7 @@ class BankService(object):
 
         try:
             decoded_token = json.loads(base64.b64decode(token).decode())
-            if "encryptedMessage" in decoded_token:
+            if "signedMessage" in decoded_token:
                 method = "google/payment"
         except:
             raise TypeError("Failed to decode payment token")

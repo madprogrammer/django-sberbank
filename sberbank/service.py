@@ -226,11 +226,13 @@ class BankService(object):
                 payment.save()
             raise NetworkException(payment.uid if payment else None)
 
-        data.update({'password': '****'})
+        if rest:
+            data.update({'password': '****'})
+
         LogEntry.objects.create(action=method,
             bank_id=payment.bank_id if payment else None,
             payment_id=payment.uid if payment else None,
-            response_text=response.text, request_text=json.dumps(data))
+            response_text=response.text, request_text=json.dumps(data) if rest else data)
 
         if response.status_code != 200:
             if payment:

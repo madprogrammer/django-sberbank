@@ -45,6 +45,8 @@ class BankService(object):
     def mobile_pay(self, amount, token, ip, **kwargs):
         currency = self.merchant.get('currency', self.__default_currency_code)
         details = kwargs.get('details', {})
+        fail_url = kwargs.get('fail_url', self.merchant.get('fail_url'))
+        success_url = kwargs.get('success_url', self.merchant.get('success_url'))
         method = "applepay/payment"
 
         try:
@@ -78,6 +80,11 @@ class BankService(object):
             'paymentToken': token,
             'ip': ip
         }
+        if method == "google/payment":
+            data.update({
+                'returnUrl': success_url,
+                'failUrl': fail_url
+            })
         if kwargs.get('params'):
             data.update({'additionalParameters': kwargs.get('params')})
         if kwargs.get('description'):

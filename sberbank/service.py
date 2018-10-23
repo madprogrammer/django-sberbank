@@ -199,22 +199,25 @@ class BankService(object):
     def deactivate_binding(self, binding_id):
         self.execute_request({'bindingId': binding_id}, "rest/unBindCard")
 
-    def execute_request(self, data, method, payment=None, headers=None):
-        headers = {} if not headers else headers
+    def execute_request(self, data, method, payment=None):
+        rest = method.startswith("rest/")
 
-        all_headers = {
-            "Content-Type": "application/json",
+        headers = {
             "Accept": "application/json"
         }
-        all_headers.update(headers)
 
-        data.update({
-            "userName": self.merchant.get('username'),
-            'password': self.merchant.get('password')
-        })
+        if rest:
+            data.update({
+                "userName": self.merchant.get('username'),
+                'password': self.merchant.get('password')
+            })
+        else:
+            headers.update({"Content-Type": "application/json"})
+            data = json.dumps(data)
+
         try:
             response = requests.post(
-                '{}/{}.do'.format(self.__default_gateway_address, method), data, headers=all_headers)
+                '{}/{}.do'.format(self.__default_gateway_address, method), data=data, headers=headers)
         except (requests.ConnectTimeout,
                 requests.ConnectionError,
                 requests.HTTPError):

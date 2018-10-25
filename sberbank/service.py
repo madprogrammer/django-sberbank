@@ -92,7 +92,15 @@ class BankService(object):
         if kwargs.get('description'):
             data.update({'description': kwargs.get('description')})
 
-        return self.execute_request(data, method, payment)
+        response = self.execute_request(data, method, payment)
+
+        if response.get('success'):
+            payment.bank_id = response.get('data').get('orderId')
+            payment.status = Status.PENDING
+        else:
+            payment.status = Status.FAILED
+
+        payment.save()
 
     def pay(self, amount, preauth=False, **kwargs):
         session_timeout = self.merchant.get('session_timeout', self.__default_session_timeout)

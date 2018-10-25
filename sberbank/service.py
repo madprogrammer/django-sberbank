@@ -101,6 +101,7 @@ class BankService(object):
             payment.status = Status.FAILED
 
         payment.save()
+        return response
 
     def pay(self, amount, preauth=False, **kwargs):
         session_timeout = self.merchant.get('session_timeout', self.__default_session_timeout)

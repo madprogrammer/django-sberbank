@@ -21,6 +21,7 @@ class BankService(object):
             self.__default_gateway_address = \
                 'https://securepayments.sberbank.ru/payment'
         self._get_credentials(merchant_id)
+        self.merchant_id = merchant_id
 
     def _get_credentials(self, merchant_id):
         settings_merchant_key = "MERCHANTS"
@@ -75,14 +76,14 @@ class BankService(object):
         payment.save()
 
         data = {
-            'merchant': self.merchant.get("username"),
+            'merchant': self.merchant_id,
             'orderNumber': payment.uid.hex,
-            'amount': int(amount * 100),
             'paymentToken': token,
             'ip': ip
         }
         if method == "google/payment":
             data.update({
+                'amount': int(amount * 100),
                 'returnUrl': success_url,
                 'failUrl': fail_url
             })

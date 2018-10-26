@@ -45,6 +45,7 @@ class BankService(object):
 
     def mobile_pay(self, amount, token, ip, **kwargs):
         currency = self.merchant.get('currency', self.__default_currency_code)
+        client_id = kwargs.get('client_id')
         details = kwargs.get('details', {})
         fail_url = kwargs.get('fail_url', self.merchant.get('fail_url'))
         success_url = kwargs.get('success_url', self.merchant.get('success_url'))
@@ -64,7 +65,7 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, details={
+        payment = Payment(amount=amount, client_id=client_id, details={
             'username': self.merchant.get("username"),
             'currency': currency
         })

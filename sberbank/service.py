@@ -97,7 +97,8 @@ class BankService(object):
 
         if response.get('success'):
             payment.bank_id = response.get('data').get('orderId')
-            payment.status = Status.PENDING
+            payment.status = Status.SUCCEEDED
+            payment.details.update({"pan": response['orderStatus']['cardAuthInfo']['pan']})
         else:
             payment.status = Status.FAILED
 

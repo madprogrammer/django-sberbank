@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(name='django-sberbank',
-    version='0.2.21',
+    version='0.2.22',
     description='Django app for Sberbank payments',
     url='http://github.com/madprogrammer/django-sberbank',
     author='Sergey Anufrienko',

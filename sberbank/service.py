@@ -55,7 +55,6 @@ class BankService(object):
             decoded_token = json.loads(base64.b64decode(token).decode())
             if "signedMessage" in decoded_token:
                 method = "google/payment"
-                token = base64.b64encode(decoded_token['signedMessage'].encode()).decode()
         except:
             raise TypeError("Failed to decode payment token")
 

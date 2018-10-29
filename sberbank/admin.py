@@ -29,7 +29,7 @@ class PaymentAdmin(admin.ModelAdmin):
             }
         ),
         (
-            _('Дополнительно'),
+            _('More details'),
             {
                 'classes': ('collapse',),
                 'fields': ['details', 'error_code', 'error_message']

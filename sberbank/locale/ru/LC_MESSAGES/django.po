@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-30 23:45+0300\n"
+"POT-Creation-Date: 2018-10-29 19:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: admin.py:32
-msgid "Дополнительно"
-msgstr ""
+msgid "More details"
+msgstr "Больше деталей"
 
 #: apps.py:7
 msgid "sberbank"
@@ -100,6 +100,6 @@ msgstr "запись в журнале"
 msgid "log entries"
 msgstr "записи в журнале"
 
-#: service.py:109
+#: service.py:168
 msgid "card binding"
 msgstr "Привязка карты"

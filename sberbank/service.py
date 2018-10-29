@@ -113,7 +113,7 @@ class BankService(object):
         page_view = kwargs.get('page_view', 'DESKTOP')
         details = kwargs.get('details', {})
         description = kwargs.get('description')
-        method = 'rest/register' if not preauth else "rest/registerPreAuth"
+        method = 'rest/register' if not preauth else 'rest/registerPreAuth'
 
         if success_url is None:
             raise ValueError("success_url is not set")
@@ -164,7 +164,7 @@ class BankService(object):
 
     def bind_refund(self, client_id):
         return self.pay(1.0, client_id=client_id,
-            method="registerPreAuth", page_view="bind", details={"bind_refund": True},
+            preauth=True, page_view="bind", details={"bind_refund": True},
             description=_("card binding"))
 
     def check_bind_refund(self, payment):

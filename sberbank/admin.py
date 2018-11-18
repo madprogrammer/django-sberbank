@@ -15,7 +15,7 @@ class PaymentAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = ('created', 'updated', 'uid', 'bank_id', 'client_id', 'amount',
-        'status', 'details', 'error_code', 'error_message')
+        'status', 'method', 'details', 'error_code', 'error_message')
 
     fieldsets = (
         (
@@ -23,7 +23,7 @@ class PaymentAdmin(admin.ModelAdmin):
             {
                 'fields': [
                     ('uid', 'bank_id', 'client_id'),
-                    'status',
+                    'status', 'method',
                     ('amount',),
                 ]
             }

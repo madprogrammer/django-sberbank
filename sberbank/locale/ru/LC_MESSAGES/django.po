@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-29 19:45+0300\n"
+"POT-Creation-Date: 2018-11-18 20:15+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,78 +28,82 @@ msgstr "Больше деталей"
 msgid "sberbank"
 msgstr "сбербанк"
 
-#: models.py:38
+#: models.py:48
 msgid "bank ID"
 msgstr "банковский ИД"
 
-#: models.py:39
+#: models.py:49
 msgid "amount"
 msgstr "сумма"
 
-#: models.py:40
+#: models.py:50
 msgid "error code"
 msgstr "код ошибки"
 
-#: models.py:41
+#: models.py:51
 msgid "error message"
 msgstr "текст ошибки"
 
-#: models.py:42
+#: models.py:52
 msgid "status"
 msgstr "состояние"
 
-#: models.py:44
+#: models.py:54
 msgid "details"
 msgstr "детали"
 
-#: models.py:45
+#: models.py:55
 msgid "client ID"
 msgstr "код клиента"
 
-#: models.py:46 models.py:65
+#: models.py:56
+msgid "method"
+msgstr "метод"
+
+#: models.py:58 models.py:77
 msgid "created"
 msgstr "создан"
 
-#: models.py:47
+#: models.py:59
 msgid "modified"
 msgstr "изменен"
 
-#: models.py:51
+#: models.py:63
 msgid "payment"
 msgstr "платеж"
 
-#: models.py:52
+#: models.py:64
 msgid "payments"
 msgstr "платежи"
 
-#: models.py:60
+#: models.py:72
 msgid "payment ID"
 msgstr "ИД платежа"
 
-#: models.py:61
+#: models.py:73
 msgid "bank payment ID"
 msgstr "банковский ИД платежа"
 
-#: models.py:62
+#: models.py:74
 msgid "action"
 msgstr "действие"
 
-#: models.py:63
+#: models.py:75
 msgid "request text"
 msgstr "текст запроса"
 
-#: models.py:64
+#: models.py:76
 msgid "response text"
 msgstr "текст ответа"
 
-#: models.py:70
+#: models.py:82
 msgid "log entry"
 msgstr "запись в журнале"
 
-#: models.py:71
+#: models.py:83
 msgid "log entries"
 msgstr "записи в журнале"
 
-#: service.py:168
+#: service.py:172
 msgid "card binding"
 msgstr "Привязка карты"

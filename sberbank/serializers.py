@@ -1,4 +1,4 @@
-from sberbank.models import Payment, Status
+from sberbank.models import Payment, Status, Method
 from sberbank.util import system_name
 from rest_framework import serializers
 
@@ -7,6 +7,10 @@ class PaymentSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     pan = serializers.SerializerMethodField()
     system = serializers.SerializerMethodField()
+    method = serializers.SerializerMethodField()
+
+    def get_method(self, obj):
+        return Method(obj.method).name
 
     def get_status(self, obj):
         return Status(obj.status).name

@@ -22,6 +22,16 @@ class Status(Choice):
         return str(self.value)
 
 
+class Method(Choice):
+    UNKNOWN = 0
+    WEB = 1
+    APPLE = 2
+    GOOGLE = 3
+
+    def __str__(self):
+        return str(self.value)
+
+
 class Payment(models.Model):
     """
     details JSON fields:
@@ -43,6 +53,8 @@ class Payment(models.Model):
         default=Status.CREATED, db_index=True)
     details = JSONField(_("details"), blank=True, null=True)
     client_id = models.TextField(_("client ID"), null=True, blank=True)
+    method = models.PositiveSmallIntegerField(_("method"), choices=Method.choices(),
+        default=Method.UNKNOWN, db_index=True)
     created = models.DateTimeField(_("created"), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_("modified"), auto_now=True, db_index=True)
 

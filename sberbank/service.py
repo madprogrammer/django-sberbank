@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 
 from sberbank.exceptions import NetworkException, ProcessingException, \
     PaymentNotFoundException
-from sberbank.models import Payment, LogEntry, Status
+from sberbank.models import Payment, LogEntry, Status, Method
 from sberbank.util import system_name
 
 class BankService(object):
@@ -50,11 +50,14 @@ class BankService(object):
         fail_url = kwargs.get('fail_url', self.merchant.get('fail_url'))
         success_url = kwargs.get('success_url', self.merchant.get('success_url'))
         method = "applepay/payment"
+        db_method = Method.APPLE
 
         try:
             decoded_token = json.loads(base64.b64decode(token).decode())
             if "signedMessage" in decoded_token:
                 method = "google/payment"
+                db_method = Method.GOOGLE
+
         except:
             raise TypeError("Failed to decode payment token")
 
@@ -64,7 +67,7 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, client_id=client_id, details={
+        payment = Payment(amount=amount, client_id=client_id, method=db_method, details={
             'username': self.merchant.get("username"),
             'currency': currency
         })
@@ -125,7 +128,7 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, client_id=client_id, details={
+        payment = Payment(amount=amount, client_id=client_id, method=Method.WEB, details={
             'username': self.merchant.get("username"),
             'currency': currency,
             'success_url': success_url,

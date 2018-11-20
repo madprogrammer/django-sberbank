@@ -76,6 +76,7 @@ class BankService(object):
             payment.details.update(kwargs.get('params'))
 
         payment.details.update(details)
+        payment.status = Status.PENDING
         payment.save()
 
         data = {
@@ -99,13 +100,14 @@ class BankService(object):
 
         if response.get('success'):
             payment.bank_id = response.get('data').get('orderId')
-            payment.status = Status.SUCCEEDED
             if 'orderStatus' in response:
                 payment.details.update({"pan": response['orderStatus']['cardAuthInfo']['pan']})
         else:
             payment.status = Status.FAILED
 
         payment.save()
+        if payment.status != Status.FAILED:
+            payment = check_status(payment.uid)
         return payment, response
 
     def pay(self, amount, preauth=False, **kwargs):
@@ -195,6 +197,7 @@ class BankService(object):
             payment.status = Status.FAILED
 
         payment.save(update_fields=['status', 'details'])
+        return payment
 
     def get_bindings(self, client_id):
         def convert(entry):

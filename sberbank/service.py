@@ -107,7 +107,7 @@ class BankService(object):
 
         payment.save()
         if payment.status != Status.FAILED:
-            payment = check_status(payment.uid)
+            payment = self.check_status(payment.uid)
         return payment, response
 
     def pay(self, amount, preauth=False, **kwargs):

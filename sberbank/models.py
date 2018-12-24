@@ -17,6 +17,7 @@ class Status(Choice):
     PENDING = 1
     SUCCEEDED = 2
     FAILED = 3
+    REFUNDED = 4
 
     def __str__(self):
         return str(self.value)

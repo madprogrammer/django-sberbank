@@ -193,8 +193,10 @@ class BankService(object):
         if response.get('orderStatus') == 2:
             payment.status = Status.SUCCEEDED
             payment.details.update({"pan": response['cardAuthInfo']['pan']})
-        elif response.get('orderStatus') in [3, 5, 6]:
+        elif response.get('orderStatus') in [3, 6]:
             payment.status = Status.FAILED
+        elif response.get('orderStatus') == 4:
+            payment.status = Status.REFUNDED
 
         payment.save(update_fields=['status', 'details'])
         return payment

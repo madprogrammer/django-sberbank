@@ -51,11 +51,11 @@ class Payment(models.Model):
     error_code = models.PositiveIntegerField(_("error code"), null=True, blank=True)
     error_message = models.TextField(_("error message"), null=True, blank=True)
     status = models.PositiveSmallIntegerField(_("status"), choices=Status.choices(),
-        default=Status.CREATED, db_index=True)
+                                              default=Status.CREATED, db_index=True)
     details = JSONField(_("details"), blank=True, null=True)
     client_id = models.TextField(_("client ID"), null=True, blank=True)
     method = models.PositiveSmallIntegerField(_("method"), choices=Method.choices(),
-        default=Method.UNKNOWN, db_index=True)
+                                              default=Method.UNKNOWN, db_index=True)
     created = models.DateTimeField(_("created"), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_("modified"), auto_now=True, db_index=True)
 

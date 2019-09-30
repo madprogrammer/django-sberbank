@@ -14,8 +14,10 @@ class PaymentAdmin(admin.ModelAdmin):
         'uid', 'bank_id', 'amount'
     )
 
-    readonly_fields = ('created', 'updated', 'uid', 'bank_id', 'client_id', 'amount',
-        'status', 'method', 'details', 'error_code', 'error_message')
+    readonly_fields = (
+        'created', 'updated', 'uid', 'bank_id', 'client_id', 'amount',
+        'status', 'method', 'details', 'error_code', 'error_message'
+    )
 
     fieldsets = (
         (
@@ -47,8 +49,9 @@ class LogEntryAdmin(admin.ModelAdmin):
         'uid', 'bank_id', 'payment_id', 'action'
     )
 
-    readonly_fields = ('created', 'uid', 'payment_id', 'bank_id',
-        'action', 'request_text', 'response_text', 'checksum')
+    readonly_fields = (
+        'created', 'uid', 'payment_id', 'bank_id', 'action',
+        'request_text', 'response_text', 'checksum')
 
     fieldsets = (
         (

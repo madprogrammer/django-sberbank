@@ -16,23 +16,28 @@ from sberbank.models import Payment, LogEntry, Status
 from sberbank.service import BankService
 from sberbank.serializers import PaymentSerializer
 
+
 class StatusView(APIView):
-    def get(self, request, uid=None):
+    @staticmethod
+    def get(request, uid=None):
         try:
             payment = Payment.objects.get(uid=uid)
         except Payment.DoesNotExist:
             return HttpResponse(status=404)
         return Response({"status": Status(payment.status).name})
 
+
 class BindingsView(APIView):
-    def get(self, request, client_id=None):
+    @staticmethod
+    def get(request, client_id=None):
         svc = BankService(settings.MERCHANT_KEY)
         return Response(svc.get_bindings(client_id))
 
 class BindingView(APIView):
     authentication_classes = []
 
-    def delete(self, request, binding_id=None):
+    @staticmethod
+    def delete(request, binding_id=None):
         svc = BankService(settings.MERCHANT_KEY)
         svc.deactivate_binding(binding_id)
         return HttpResponse(status=200)
@@ -41,11 +46,14 @@ class BindingView(APIView):
     def dispatch(self, *args, **kwargs):
         return super(BindingView, self).dispatch(*args, **kwargs)
 
+
 class GetHistoryView(APIView):
-    def get(self, request, client_id=None, format=None):
+    @staticmethod
+    def get(request, client_id=None, format=None):
         payments = Payment.objects.filter(client_id=client_id, status=Status.SUCCEEDED).order_by('-updated')
         serializer = PaymentSerializer(payments, many=True)
         return Response(serializer.data)
+
 
 def callback(request):
     data = OrderedDict(sorted(request.GET.items(), key=lambda x: x[0]))
@@ -68,7 +76,8 @@ def callback(request):
         checksum = hmac.new(hash_key.encode(), check_str.encode(), sha256) \
             .hexdigest().upper()
 
-        LogEntry.objects.create(action="callback",
+        LogEntry.objects.create(
+            action="callback",
             bank_id=payment.bank_id,
             payment_id=payment.uid,
             response_text=json.dumps(request.GET),
@@ -89,6 +98,7 @@ def callback(request):
 
     return HttpResponse(status=200)
 
+
 def redirect(request, kind=None):
     try:
         payment = Payment.objects.get(bank_id=request.GET.get('orderId'))
@@ -98,7 +108,8 @@ def redirect(request, kind=None):
     svc = BankService(settings.MERCHANT_KEY)
     svc.check_status(payment.uid)
 
-    LogEntry.objects.create(action="redirect_%s" % kind,
+    LogEntry.objects.create(
+        action="redirect_%s" % kind,
         bank_id=payment.bank_id,
         payment_id=payment.uid,
         response_text=json.dumps(request.GET),
@@ -108,4 +119,3 @@ def redirect(request, kind=None):
 
     merchant = settings.MERCHANTS.get(settings.MERCHANT_KEY)
     return HttpResponseRedirect("%s?payment=%s" % (merchant["app_%s_url" % kind], payment.uid))
-

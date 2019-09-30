@@ -9,13 +9,16 @@ class PaymentSerializer(serializers.ModelSerializer):
     system = serializers.SerializerMethodField()
     method = serializers.SerializerMethodField()
 
-    def get_method(self, obj):
+    @staticmethod
+    def get_method(obj):
         return Method(obj.method).name
 
-    def get_status(self, obj):
+    @staticmethod
+    def get_status(obj):
         return Status(obj.status).name
 
-    def get_pan(self, obj):
+    @staticmethod
+    def get_pan(obj):
         return obj.details.get('pan')
 
     def get_system(self, obj):

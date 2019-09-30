@@ -18,7 +18,8 @@ from braces.views import CsrfExemptMixin
 
 
 class StatusView(APIView):
-    def get(self, request, uid=None):
+    @staticmethod
+    def get(request, uid=None):
         try:
             payment = Payment.objects.get(uid=uid)
         except Payment.DoesNotExist:
@@ -27,7 +28,8 @@ class StatusView(APIView):
 
 
 class BindingsView(APIView):
-    def get(self, request, client_id=None):
+    @staticmethod
+    def get(request, client_id=None):
         svc = BankService(settings.MERCHANT_KEY)
         return Response(svc.get_bindings(client_id))
 
@@ -35,14 +37,16 @@ class BindingsView(APIView):
 class BindingView(CsrfExemptMixin, APIView):
     authentication_classes = []
 
-    def delete(self, request, binding_id=None):
+    @staticmethod
+    def delete(request, binding_id=None):
         svc = BankService(settings.MERCHANT_KEY)
         svc.deactivate_binding(binding_id)
         return HttpResponse(status=200)
 
 
 class GetHistoryView(APIView):
-    def get(self, request, client_id=None, format=None):
+    @staticmethod
+    def get(request, client_id=None, format=None):
         payments = Payment.objects.filter(client_id=client_id, status=Status.SUCCEEDED).order_by('-updated')
         serializer = PaymentSerializer(payments, many=True)
         return Response(serializer.data)

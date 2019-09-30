@@ -59,7 +59,7 @@ class BankService(object):
                 method = "google/payment"
                 db_method = Method.GOOGLE
 
-        except:
+        except Exception:
             raise TypeError("Failed to decode payment token")
 
         try:

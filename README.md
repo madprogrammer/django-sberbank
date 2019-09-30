@@ -41,6 +41,16 @@ urlpatterns = [
 ```
 4. Запустить `python manage.py migrate` чтобы создать модели.
 
+## Установка окружения
+
+Переменная окружения: `ENVIRONMENT`
+
+Возможные значения:
+* `development` - https://securepayments.sberbank.ru/payment
+* `production` - https://3dsec.sberbank.ru/payment
+
+По-умолчанию: `development`
+
 ## Параметры словаря `MERCHANTS`
 * `success_url` - на данный URL Сбербанк будет перенаправлять браузер после успешного платежа
 * `fail_url` - на данный URL Сбербанк будет перенаправлять браузер после неуспешного платежа

@@ -4,9 +4,10 @@ import json
 
 from collections import OrderedDict
 
-from django.views.generic import View
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,7 +15,6 @@ from rest_framework.views import APIView
 from sberbank.models import Payment, LogEntry, Status
 from sberbank.service import BankService
 from sberbank.serializers import PaymentSerializer
-from braces.views import CsrfExemptMixin
 
 
 class StatusView(APIView):
@@ -33,8 +33,7 @@ class BindingsView(APIView):
         svc = BankService(settings.MERCHANT_KEY)
         return Response(svc.get_bindings(client_id))
 
-
-class BindingView(CsrfExemptMixin, APIView):
+class BindingView(APIView):
     authentication_classes = []
 
     @staticmethod
@@ -42,6 +41,10 @@ class BindingView(CsrfExemptMixin, APIView):
         svc = BankService(settings.MERCHANT_KEY)
         svc.deactivate_binding(binding_id)
         return HttpResponse(status=200)
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(BindingView, self).dispatch(*args, **kwargs)
 
 
 class GetHistoryView(APIView):

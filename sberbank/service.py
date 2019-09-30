@@ -11,6 +11,7 @@ from sberbank.exceptions import NetworkException, ProcessingException, \
 from sberbank.models import Payment, LogEntry, Status, Method
 from sberbank.util import system_name
 
+
 class BankService(object):
     __default_session_timeout = 1200
     __default_currency_code = 643
@@ -158,7 +159,7 @@ class BankService(object):
             data.update({'description': description})
 
         response = self.execute_request(data, method, payment)
- 
+
         payment.bank_id = response.get('orderId')
         payment.status = Status.PENDING
         payment.details.update({'redirect_url': response.get('formUrl')})
@@ -170,12 +171,12 @@ class BankService(object):
 
     def bind_refund(self, client_id):
         return self.pay(1.0, client_id=client_id,
-            preauth=True, page_view="bind", details={"bind_refund": True},
-            description=_("card binding"))
+                        preauth=True, page_view="bind", details={"bind_refund": True},
+                        description=_("card binding"))
 
     def check_bind_refund(self, payment):
         if payment.details.get('bind_refund', False) and \
-            payment.status in (Status.PENDING, Status.SUCCEEDED):
+                payment.status in (Status.PENDING, Status.SUCCEEDED):
             self.reverse(payment)
 
     def reverse(self, payment):
@@ -209,6 +210,7 @@ class BankService(object):
                 'expiry_date': entry['expiryDate'],
                 'system': system_name(entry['maskedPan'])
             }
+
         try:
             response = self.execute_request({"clientId": client_id}, "rest/getBindings")
             return list(map(convert, response.get('bindings')))
@@ -250,9 +252,9 @@ class BankService(object):
             data.update({'password': '****'})
 
         LogEntry.objects.create(action=method,
-            bank_id=payment.bank_id if payment else None,
-            payment_id=payment.uid if payment else None,
-            response_text=response.text, request_text=json.dumps(data) if rest else data)
+                                bank_id=payment.bank_id if payment else None,
+                                payment_id=payment.uid if payment else None,
+                                response_text=response.text, request_text=json.dumps(data) if rest else data)
 
         if response.status_code != 200:
             if payment:
@@ -267,7 +269,6 @@ class BankService(object):
                 payment.status = Status.FAILED
                 payment.save()
             raise ProcessingException(payment.uid if payment.uid else None)
-
 
         if int(response.get('errorCode', 0)) != 0:
             if payment:

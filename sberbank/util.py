@@ -28,4 +28,3 @@ def system_name(card_num):
     elif snum.startswith("7"):
         return "UEK"
     return "UNKNOWN"
-

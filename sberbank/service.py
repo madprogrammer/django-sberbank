@@ -251,10 +251,11 @@ class BankService(object):
         if rest:
             data.update({'password': '****'})
 
-        LogEntry.objects.create(action=method,
-                                bank_id=payment.bank_id if payment else None,
-                                payment_id=payment.uid if payment else None,
-                                response_text=response.text, request_text=json.dumps(data) if rest else data)
+        LogEntry.objects.create(
+            action=method,
+            bank_id=payment.bank_id if payment else None,
+            payment_id=payment.uid if payment else None,
+            response_text=response.text, request_text=json.dumps(data) if rest else data)
 
         if response.status_code != 200:
             if payment:

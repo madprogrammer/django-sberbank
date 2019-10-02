@@ -13,7 +13,7 @@ setuptools.setup(
     zip_safe=False,
     install_requires=[
         'django',
-        'django-jsonfield',
+        'jsonfield2',
         'djangorestframework',
         'celery',
         'requests',

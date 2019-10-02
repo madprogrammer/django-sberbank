@@ -161,3 +161,15 @@ except Exception as exc:
     # Что-то пошло не так
     raise
 ```
+
+### Периодическая проверка платежей по которым не известно состояние
+
+```python
+from datetime import timedelta
+from celery.task import periodic_task
+from sberbank.tasks import check_payments
+
+@periodic_task(run_every=timedelta(minutes=20))
+def task_check_payments():
+    check_payments()
+```

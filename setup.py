@@ -15,7 +15,6 @@ setuptools.setup(
         'django',
         'django-jsonfield',
         'djangorestframework',
-        'celery',
         'requests',
     ],
     classifiers=[

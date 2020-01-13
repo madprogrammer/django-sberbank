@@ -7,16 +7,18 @@ from sberbank.models import Payment, LogEntry
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     list_display = (
-        'uid', 'bank_id', 'amount', 'status', 'created', 'updated',
+        'uid', 'bank_id', 'order_number',
+        'amount', 'status', 'created', 'updated',
     )
     list_filter = ('status',)
     search_fields = (
-        'uid', 'bank_id', 'amount'
+        'uid', 'bank_id', 'amount', 'order_number'
     )
 
     readonly_fields = (
         'created', 'updated', 'uid', 'bank_id', 'client_id', 'amount',
-        'status', 'method', 'details', 'error_code', 'error_message'
+        'status', 'method', 'details', 'error_code', 'error_message',
+        'order_number'
     )
 
     fieldsets = (
@@ -25,7 +27,7 @@ class PaymentAdmin(admin.ModelAdmin):
             {
                 'fields': [
                     ('uid', 'bank_id', 'client_id'),
-                    'status', 'method',
+                    'order_number', 'status', 'method',
                     ('amount',),
                 ]
             }

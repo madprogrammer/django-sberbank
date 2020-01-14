@@ -7,7 +7,7 @@ import sberbank.sberbank_settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sberbank', '0006_payment_method'),
+        ('sberbank', '0007_auto_20191204_1542'),
     ]
 
     operations = [

@@ -51,7 +51,7 @@ class Payment(models.Model):
     bank_id = models.UUIDField(_("bank ID"), null=True, blank=True, db_index=True)
     amount = models.DecimalField(_("amount"), max_digits=128, decimal_places=2)
     order_number = models.CharField(
-        'Номер заказа', max_length=32, editable=False,
+        'Номер заказа', max_length=64, editable=False,
         default=sberbank_settings.generate_order_number
     )
     error_code = models.PositiveIntegerField(_("error code"), null=True, blank=True)

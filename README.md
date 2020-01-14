@@ -177,7 +177,5 @@ def task_check_payments():
 
 ### Настройки
 ```python
-ORDER_NUMBER_PREFIX - Префикс номера заказа. По умолчанию 'SC'.
-ORDER_NUMBER_PREFIX_SEPARATOR - Разделитель префикса и самого 
-номера заказа. По умолчанию '-'.
+ORDER_NUMBER_PREFIX - Префикс номера заказа. По умолчанию 'SC-'.
 ```

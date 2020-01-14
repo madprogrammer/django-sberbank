@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='payment',
             name='order_number',
-            field=models.CharField(default=sberbank.sberbank_settings.order_number, editable=False, max_length=32, verbose_name='Номер заказа'),
+            field=models.CharField(default=sberbank.sberbank_settings.order_number, editable=False, max_length=64, verbose_name='Номер заказа'),
         ),
     ]

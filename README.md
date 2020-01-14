@@ -173,3 +173,11 @@ from sberbank.tasks import check_payments
 def task_check_payments():
     check_payments()
 ```
+
+
+### Настройки
+```python
+ORDER_NUMBER_PREFIX - Префикс номера заказа. По умолчанию 'SC'.
+ORDER_NUMBER_PREFIX_SEPARATOR - Разделитель префикса и самого 
+номера заказа. По умолчанию '-'.
+```

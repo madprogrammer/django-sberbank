@@ -126,7 +126,7 @@ try:
     client_id = request.data.get("client_id")
 
     # Сумма платежа в рублях
-    amounnt = 10.0
+    amount = 10.0
 
     # Токен, переданный приложением для Apple/Android
     # библиотека сама определяет тип платежа по формату

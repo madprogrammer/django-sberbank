@@ -120,6 +120,7 @@ class BankService(object):
         page_view = kwargs.get('page_view', 'DESKTOP')
         details = kwargs.get('details', {})
         description = kwargs.get('description')
+        binding_id = kwargs.get('binding_id', None)
         method = 'rest/register' if not preauth else 'rest/registerPreAuth'
 
         if success_url is None:
@@ -157,6 +158,8 @@ class BankService(object):
             data.update({'clientId': client_id})
         if kwargs.get('description'):
             data.update({'description': description})
+        if kwargs.get('binding_id'):
+            data.update({'bindingId': binding_id})
 
         response = self.execute_request(data, method, payment)
 

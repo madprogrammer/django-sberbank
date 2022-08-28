@@ -6,6 +6,7 @@ import requests
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
+from sberbank import sberbank_settings
 from sberbank.exceptions import NetworkException, ProcessingException, \
     PaymentNotFoundException
 from sberbank.models import Payment, LogEntry, Status, Method
@@ -68,10 +69,16 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, client_id=client_id, method=db_method, details={
-            'username': self.merchant.get("username"),
-            'currency': currency
-        })
+        payment = Payment(
+            amount=amount,
+            client_id=client_id,
+            method=db_method,
+            order_number=sberbank_settings.generate_order_number(),
+            details={
+                'username': self.merchant.get("username"),
+                'currency': currency
+            }
+        )
 
         if kwargs.get('params'):
             payment.details.update(kwargs.get('params'))
@@ -82,7 +89,7 @@ class BankService(object):
 
         data = {
             'merchant': self.merchant_id,
-            'orderNumber': payment.uid.hex,
+            'orderNumber': payment.order_number,
             'paymentToken': token,
             'ip': ip
         }
@@ -132,20 +139,26 @@ class BankService(object):
             raise TypeError(
                 "Wrong amount type, passed {} ({}) instead of decimal".format(amount, type(amount)))
 
-        payment = Payment(amount=amount, client_id=client_id, method=Method.WEB, details={
-            'username': self.merchant.get("username"),
-            'currency': currency,
-            'success_url': success_url,
-            'fail_url': fail_url,
-            'session_timeout': session_timeout,
-            'client_id': client_id
-        })
+        payment = Payment(
+            amount=amount,
+            client_id=client_id,
+            method=Method.WEB,
+            order_number=sberbank_settings.generate_order_number(),
+            details={
+                'username': self.merchant.get("username"),
+                'currency': currency,
+                'success_url': success_url,
+                'fail_url': fail_url,
+                'session_timeout': session_timeout,
+                'client_id': client_id
+            }
+        )
 
         payment.details.update(details)
         payment.save()
 
         data = {
-            'orderNumber': payment.uid.hex,
+            'orderNumber': payment.order_number,
             'amount': int(amount * 100),
             'returnUrl': success_url,
             'failUrl': fail_url,

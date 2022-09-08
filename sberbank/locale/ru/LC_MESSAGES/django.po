@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-18 20:15+0300\n"
+"POT-Creation-Date: 2019-10-02 23:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,90 +20,86 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: admin.py:32
-msgid "More details"
-msgstr "Больше деталей"
-
-#: apps.py:7
+#: sberbank/apps.py:7
 msgid "sberbank"
 msgstr "сбербанк"
 
-#: models.py:48
+#: sberbank/models.py:49
 msgid "bank ID"
 msgstr "банковский ИД"
 
-#: models.py:49
+#: sberbank/models.py:50
 msgid "amount"
 msgstr "сумма"
 
-#: models.py:50
+#: sberbank/models.py:51
 msgid "error code"
 msgstr "код ошибки"
 
-#: models.py:51
+#: sberbank/models.py:52
 msgid "error message"
 msgstr "текст ошибки"
 
-#: models.py:52
+#: sberbank/models.py:53
 msgid "status"
 msgstr "состояние"
 
-#: models.py:54
+#: sberbank/models.py:55
 msgid "details"
 msgstr "детали"
 
-#: models.py:55
+#: sberbank/models.py:56
 msgid "client ID"
 msgstr "код клиента"
 
-#: models.py:56
+#: sberbank/models.py:57
 msgid "method"
 msgstr "метод"
 
-#: models.py:58 models.py:77
+#: sberbank/models.py:59 sberbank/models.py:78
 msgid "created"
 msgstr "создан"
 
-#: models.py:59
+#: sberbank/models.py:60
 msgid "modified"
 msgstr "изменен"
 
-#: models.py:63
+#: sberbank/models.py:64
 msgid "payment"
 msgstr "платеж"
 
-#: models.py:64
+#: sberbank/models.py:65
 msgid "payments"
 msgstr "платежи"
 
-#: models.py:72
+#: sberbank/models.py:73
 msgid "payment ID"
 msgstr "ИД платежа"
 
-#: models.py:73
+#: sberbank/models.py:74
 msgid "bank payment ID"
 msgstr "банковский ИД платежа"
 
-#: models.py:74
+#: sberbank/models.py:75
 msgid "action"
 msgstr "действие"
 
-#: models.py:75
+#: sberbank/models.py:76
 msgid "request text"
 msgstr "текст запроса"
 
-#: models.py:76
+#: sberbank/models.py:77
 msgid "response text"
 msgstr "текст ответа"
 
-#: models.py:82
+#: sberbank/models.py:83
 msgid "log entry"
 msgstr "запись в журнале"
 
-#: models.py:83
+#: sberbank/models.py:84
 msgid "log entries"
 msgstr "записи в журнале"
 
-#: service.py:172
+#: sberbank/service.py:175
 msgid "card binding"
 msgstr "Привязка карты"
